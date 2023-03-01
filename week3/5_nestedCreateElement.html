@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Uncover</title>
+    <style>
+    </style>
+  </head>
+  <body>
+    <h1>Belajar React</h1>
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script>
+      const myMenu = React.createElement(
+        'ul',
+        { id: 'menu' },
+        React.createElement('li', {key:'a'}, React.createElement('a', {href:'https://www.google.com/search?q=Espresso'}, 'Espresso')),
+        React.createElement('li', {key:'b'}, React.createElement('a', {href:'https://www.google.com/search?q=Cappuccino'}, 'Cappuccino')),
+        React.createElement('li', {key:'c'}, React.createElement('a', {href:'https://www.google.com/search?q=Moccacino'}, 'Moccacino')),
+      );
+
+      ReactDOM.createRoot(document.getElementById('root')).render(myMenu);
+    </script>
+  </body>
+</html>
