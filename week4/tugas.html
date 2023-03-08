@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+        // menampilkan array mahasiswas ke dalam table dengan JSX
+
+        const mahasiswas = [
+            {
+                nama: "Eka",
+                umur: 19,
+                jurusan: "Teknik Informatika"
+            },
+            {
+                nama: "Lisa",
+                umur: 18,
+                jurusan: "Teknik Informatika"
+            },
+            {
+                nama: "Rudi",
+                umur: 19,
+                jurusan: "Teknik Elektro"
+            },
+        ]
+
+        const myElement = (
+            <table style={{ border: "1px solid" }}>
+                <thead style={{ border: "1px solid" }}>
+                    <tr>
+                        <th style={{ border: "1px solid" }}>Nama</th>
+                        <th style={{ border: "1px solid" }}>Umur</th>
+                        <th style={{ border: "1px solid" }}>Jurusan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        mahasiswas.map((mahasiswa, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td style={{ border: "1px solid" }}>{mahasiswa.nama}</td>
+                                    <td style={{ border: "1px solid" }}>{mahasiswa.umur}</td>
+                                    <td style={{ border: "1px solid" }}>{mahasiswa.jurusan}</td>
+                                </tr>
+                            )
+                        })
+                    }
+                </tbody>
+            </table>
+        )
+
+        ReactDOM.createRoot(document.getElementById('root')).render(myElement);
+    </script>
+</body>
+</html>
