@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      class Mahasiswa extends React.Component {
+        render() {
+          return (
+            <div className="card" style={{ width: "18rem" }}>
+              <img
+                src={"img/" + this.props.pasfoto}
+                className="card-img-top"
+                alt="..."
+              />
+              <div className="card-body">
+                <h5 className="card-title">{this.props.nama}</h5>
+                <p className="card-text">{this.props.jurusan}</p>
+                <a href="#" className="btn btn-primary">
+                  Ini tombol
+                </a>
+              </div>
+            </div>
+          );
+        }
+      }
+
+      class DaftarMahasiswa extends React.Component {
+        render() {
+          const mahasiswas = [
+            {
+              id: 1,
+              nama: "Eka",
+              jurusan: "Teknik Informatika",
+              pasfoto: "people1.png",
+            },
+            {
+              id: 2,
+              nama: "Lisa",
+              jurusan: "Sistem Informasi",
+              pasfoto: "people2.png",
+            },
+            {
+              id: 3,
+              nama: "Rudi",
+              jurusan: "Sistem Informasi",
+              pasfoto: "people3.png",
+            },
+          ];
+
+          return (
+            <React.Fragment>
+              <div className="container">
+                <div>
+                  <h1>Daftar Mahasiswa</h1>
+                </div>
+                <hr></hr>
+                <div className="d-sm-flex justify-content-between mb-2">
+                  {mahasiswas.map((mahasiswa) => (
+                    <Mahasiswa
+                      key={mahasiswa.id}
+                      nama={mahasiswa.nama}
+                      jurusan={mahasiswa.jurusan}
+                      pasfoto={mahasiswa.pasfoto}
+                    />
+                  ))}
+                </div>
+              </div>
+            </React.Fragment>
+          );
+        }
+      }
+
+      ReactDOM.render(<DaftarMahasiswa />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
