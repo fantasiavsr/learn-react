@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      const mahasiswa = {
+        nama: "Alif",
+        umur: 20,
+        jurusan: "Teknik Informatika",
+        photo: "https://avatars.githubusercontent.com/u/86558365?s=400&u=4353eb6d90de68702f36095e9fc7cc4c158c04aa&v=4",
+      };
+
+      class Mahasiswa extends React.Component {
+        render() {
+          return (
+            <figure>
+              <img src={this.props.photo} alt={this.props.nama} style={{ width: 200, height: 200 }}/>
+              <figcaption>
+                <h3>Nama: {this.props.nama}</h3>
+                <p>Umur: {this.props.umur}</p>
+                <p>Jurusan: {this.props.jurusan}</p>
+              </figcaption>
+            </figure>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        <Mahasiswa
+          nama={mahasiswa.nama}
+          umur={mahasiswa.umur}
+          jurusan={mahasiswa.jurusan}
+          photo={mahasiswa.photo}
+        />
+      );
+    </script>
+  </body>
+</html>
