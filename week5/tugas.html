@@ -24,18 +24,27 @@
           nama: "Eka",
           jurusan: "Teknik Informatika",
           pasfoto: "people1.png",
+          alamat: "Jl. Kebon Jeruk",
+          nohp: "08123456789",
+          nama_orangtua : "Budi",
         },
         {
           id: 2,
           nama: "Lisa",
           jurusan: "Sistem Informasi",
           pasfoto: "people2.png",
+          alamat: "Jl. Menur",
+          nohp: "08123456700",
+          nama_orangtua : "Hani",
         },
         {
           id: 3,
           nama: "Rudi",
           jurusan: "Sistem Informasi",
           pasfoto: "people3.png",
+          alamat: "Jl. Melati",
+          nohp: "081231313131",
+          nama_orangtua : "Joni",
         },
       ];
 
@@ -45,6 +54,9 @@
             <img src={"img/" + props.pasfoto} alt="pasfoto" />
             <h1>{props.nama}</h1>
             <h4>{props.jurusan}</h4>
+            <h4>{props.alamat}</h4>
+            <h4>{props.nohp}</h4>
+            <h4>{props.nama_orangtua}</h4>
           </div>
         );
       };
@@ -64,6 +76,9 @@
                     nama={mahasiswa.nama}
                     jurusan={mahasiswa.jurusan}
                     pasfoto={mahasiswa.pasfoto}
+                    alamat={mahasiswa.alamat}
+                    nohp={mahasiswa.nohp}
+                    nama_orangtua={mahasiswa.nama_orangtua}
                   />
                 ))}
               </div>
