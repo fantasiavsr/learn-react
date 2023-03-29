@@ -15,7 +15,7 @@
 
     <script type="text/babel">
       const Tombol = (props) => {
-        return <button onClick={props.onTombolClick}>Click Me</button>;
+        return <button onClick={props.onButtonClick}>Click Me</button>;
       };
 
       const MyApp = () => {
@@ -26,7 +26,7 @@
         return (
           <div>
             <h1>Belajar React</h1>
-            <Tombol onTombolClick={handleClick} />
+            <Tombol onButtonClick={handleClick} />
           </div>
         );
       };
