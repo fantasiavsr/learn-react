@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body style="background-color: #F1F3F6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      //children 1
+      const AlifRizki = {
+        nama: "Muhamad Alif Rizki",
+        alamat: "Jl. Menur No. 4 Malang",
+        nohp: "081357995175",
+        foto: "profile.jpg",
+      };
+
+      //children 2
+      const Button = (props) => {
+        return (
+          <button className="btn btn-primary me-2" onClick={props.onClick}>
+            {props.children}
+          </button>
+        );
+      };
+
+      // tambahan jika perlu
+      const ButtonAlert = (props) => {
+        return (
+          <button
+            onClick={props.onButtonClick}
+            className="btn btn-primary me-2"
+          >
+            Alert
+          </button>
+        );
+      };
+
+      const Alert = (props) => {
+        return (
+          <div className="alert alert-primary" role="alert">
+            {props.children}
+          </div>
+        );
+      };
+
+      //parent App
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.myData = {
+            nama: AlifRizki.nama,
+            alamat: AlifRizki.alamat,
+            nohp: AlifRizki.nohp,
+            foto: AlifRizki.foto,
+          }; // pemanggilan children 1
+          this.namaAyah = "Setio Hadi"; // prop nama ayah pada parent
+          this.state = {
+            show: false,
+          }; // tambahan
+        }
+
+        handleClick = () => {
+          alert(
+            "Nama           :  " +
+              this.myData.nama +
+              "\nAlamat         :  " +
+              this.myData.alamat +
+              "\nNo HP          :  " +
+              this.myData.nohp +
+              "\nNama Ayah  :  " +
+              this.namaAyah
+          );
+        };
+
+        render() {
+          return (
+            <div >
+              <div className="container my-3" >
+                <div className="row text-center">
+                  <h2>UTS</h2>
+                </div>
+
+                <div className="mt-5">
+                  <div className="card shadow-sm" style={{  }}>
+                    <div className="row g-0">
+                      <div className="col-2">
+                        <img
+                          src={"img/" + this.myData.foto}
+                          alt="pasfoto"
+                          className="img-fluid rounded-start"
+                          style={{
+                            height: "",
+                          }}
+                        />
+                      </div>
+                      <div className="col ms-3">
+                        <div className="card-body">
+                            <div className="col">
+                              <div className="row">
+                                <div className="col-2">
+                                  <h5>nama</h5>
+                                </div>
+                                <div className="col">
+                                  <h5>: {this.myData.nama}</h5>
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col-2">
+                                  <h5>alamat</h5>
+                                </div>
+                                <div className="col">
+                                  <h5>: {this.myData.alamat}</h5>
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col-2">
+                                  <h5>nohp</h5>
+                                </div>
+                                <div className="col">
+                                  <h5>: {this.myData.nohp}</h5>
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-2">
+                                  <h5>nama ayah</h5>
+                                </div>
+                                <div className="col">
+                                  <h5>: {this.namaAyah}</h5>
+                                </div>
+                              </div>
+                            </div>
+
+                            <p className="card-text mt-4"><small className="text-body-secondary">Dibuat oleh Alif dari kelas TI 3A / 09</small></p>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row mt-4">
+                  <div className="col-3">
+                    <Button onClick={() => this.setState({ show: true })}>
+                      Show
+                    </Button>
+                    <Button onClick={() => this.setState({ show: false })}>
+                      Hide
+                    </Button>
+                    <ButtonAlert onButtonClick={this.handleClick} />
+                  </div>
+                  <div className="col-8">
+                    {this.state.show ? (
+                      <Alert>
+                        <div className="row">
+                          <div className="col-2">
+                            <h5>nama</h5>
+                          </div>
+                          <div className="col">
+                            <h5>: {this.myData.nama}</h5>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-2">
+                            <h5>alamat</h5>
+                          </div>
+                          <div className="col">
+                            <h5>: {this.myData.alamat}</h5>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <div className="col-2">
+                            <h5>nohp</h5>
+                          </div>
+                          <div className="col">
+                            <h5>: {this.myData.nohp}</h5>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-2">
+                            <h5>nama ayah</h5>
+                          </div>
+                          <div className="col">
+                            <h5>: {this.namaAyah}</h5>
+                          </div>
+                        </div>
+                      </Alert>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>

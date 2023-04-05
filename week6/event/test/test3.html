@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      const ProfileData = {
+        nama: "Muhamad Alif Rizki",
+        kelas: "TI-3A",
+        jurusan: "Teknik Informatika",
+        foto: "profile2.jpg",
+        umur: 22,
+        alamat: "Jl. Menur No. 4 Malang",
+      };
+
+      const ProfileCard = (props) => {
+        return (
+          <div className="card">
+            <img
+              src={"img/" + props.foto}
+              alt="pasfoto"
+              className="img-card-top"
+              style={{ width: "100%", height: "312px", objectFit: "cover" }}
+            />
+            <div className="card-body">
+              <h5 className="card-title">{props.nama}</h5>
+              <h6 className="card-subtitle mb-2 text-muted">{props.kelas}</h6>
+              <p className="card-text">{props.jurusan}</p>
+              <a href="#" className="card-link">
+                Card link
+              </a>
+              <a href="#" className="card-link">
+                Another link
+              </a>
+            </div>
+          </div>
+        );
+      };
+
+      const ProfileDetailCard = (props) => {
+        return (
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">{props.nama}</h5>
+              <h6 className="card-subtitle mb-3 text-muted">Detail Profile</h6>
+              <div className="card-text">
+                <p style={{ marginBottom: "1px" }}>{props.umur}</p>
+                <p style={{ marginBottom: "1px" }}>{props.alamat}</p>
+              </div>
+              <a href="#" className="card-link">
+                Card link
+              </a>
+              <a href="#" className="card-link">
+                Another link
+              </a>
+            </div>
+          </div>
+        );
+      };
+
+      const Button = (props) => {
+        return (
+          <button className="btn btn-primary me-2" onClick={props.onClick}>
+            {props.children}
+          </button>
+        );
+      };
+
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            isProfileDetail: false,
+          };
+        }
+
+        render() {
+          return (
+            <div className="container my-5">
+              <Button onClick={() => this.setState({ isProfileDetail: false })}>
+                Profile
+              </Button>
+              <Button onClick={() => this.setState({ isProfileDetail: true })}>
+                Profile Detail
+              </Button>
+
+              <hr></hr>
+
+              {this.state.isProfileDetail ? (
+                <ProfileDetailCard {...ProfileData} />
+              ) : (
+                <ProfileCard {...ProfileData} />
+              )}
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
