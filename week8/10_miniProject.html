@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <style>
+      #root {
+        display: flex;
+        justify-content: center;
+      }
+      div {
+        text-align: center;
+        justify-items: center;
+        justify-content: center;
+      }
+
+      button {
+        background-color: white;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-weight: bold;
+        border: 1px solid gray;
+        box-shadow: 2px 2px 2px black;
+        margin: 10px;
+      }
+
+      button:hover {
+        box-shadow: 1px 1px 1px black;
+        background-color: #f1f1f1;
+      }
+
+      img {
+        box-shadow: 0px 0px 20px 0px black;
+        margin: 10px;
+        height: 512px;
+        width: 512px    ;
+      }
+
+      figcaption {
+        text-align: center;
+        background-color: gainsboro;
+        font-size: 1.5em;
+        padding: 10px 20px;
+        margin: 15px 0;
+        box-shadow: 12px 12px 0px black;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1f3f6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      const mahasiswa = [
+        {
+          id: "01",
+          nama: "Alif",
+          jurusan: "Teknik Informatika",
+          foto: "img/profile.jpg",
+        },
+        {
+          id: "02",
+          nama: "Lisa",
+          jurusan: "Teknik Informasi",
+          foto: "img/people2.png",
+        },
+        {
+          id: "03",
+          nama: "Rudi",
+          jurusan: "Teknik Elektro",
+          foto: "img/people1.png",
+        },
+      ];
+
+      class MyApp extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                nama: mahasiswa[0].nama,
+                jurusan: mahasiswa[0].jurusan,
+                foto: mahasiswa[0].foto
+            }
+        }
+
+        handleMahasiswaClick = (event) => {
+            const id = event.target.id;
+            this.setState({
+                nama: mahasiswa[id-1].nama,
+                jurusan: mahasiswa[id-1].jurusan,
+                foto: mahasiswa[id-1].foto
+            })
+        }
+
+        render() {
+          return (
+            <div className="">
+              {
+               mahasiswa.map((mhs) => {
+                   return (
+                       <button id={mhs.id} onClick={this.handleMahasiswaClick}>{mhs.nama}</button>
+                   )
+               })
+              }
+
+              <figure>
+                <img src={this.state.foto} alt="profile" />
+                <figcaption>
+                  <h3>{this.state.nama}</h3>
+                  <p>{this.state.jurusan}</p>
+                </figcaption>
+              </figure>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <style>
+      #root {
+        margin-top: 50px;
+      }
+      div {
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        text-align: center;
+        background-color: gainsboro;
+        padding: 10px 20px;
+        margin: 15px 0px;
+      }
+
+      button {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      button:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1f3f6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      class MyApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            judul: "Belajar React",
+            judul2: "Belajar Javascript"
+          };
+        }
+
+        handleClickButton = () => {
+          if (this.state.judul === "Belajar React") {
+            this.setState({
+              judul: "React JS",
+              judul2: "Javascript"
+            });
+          } else {
+            this.setState({
+              judul: "Belajar React State",
+              judul2: "Belajar Programming"
+            });
+          }
+        };
+
+        render() {
+          return (
+            <div>
+              <h1>{this.state.judul}</h1>
+              <h1>{this.state.judul2}</h1>
+              <button onClick={this.handleClickButton}>Ubah Judul</button>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+  </body>
+</html>
