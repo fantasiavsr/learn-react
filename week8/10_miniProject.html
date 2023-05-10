@@ -100,28 +100,26 @@
                 foto: mahasiswa[id-1].foto
             })
         }
-
+        
         render() {
           return (
-            <div className="">
-              {
-               mahasiswa.map((mhs) => {
-                   return (
-                       <button id={mhs.id} onClick={this.handleMahasiswaClick}>{mhs.nama}</button>
-                   )
-               })
-              }
-
-              <figure>
+            <div>
+              <h1>Mini Project</h1>
+              <div>
+                <button id="01" onClick={this.handleMahasiswaClick}>Mahasiswa 1</button>
+                <button id="02" onClick={this.handleMahasiswaClick}>Mahasiswa 2</button>
+                <button id="03" onClick={this.handleMahasiswaClick}>Mahasiswa 3</button>
+              </div>
+              <div>
                 <img src={this.state.foto} alt="profile" />
                 <figcaption>
-                  <h3>{this.state.nama}</h3>
-                  <p>{this.state.jurusan}</p>
+                  {this.state.nama} - {this.state.jurusan}
                 </figcaption>
-              </figure>
+              </div>
             </div>
           );
         }
+        
       }
 
       ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);

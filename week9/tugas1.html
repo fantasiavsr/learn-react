@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <style>
+      #root {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+      }
+      div {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        text-align: center;
+        background-color: gainsboro;
+        padding: 10px 20px;
+        margin: 15px 0px;
+      }
+
+      button {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      button:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1f3f6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      // praktek tukar mahasiswa menggunakan functional component
+
+      // data
+      const mahasiswa = [
+        {
+          nama: "Eka",
+          jurusan: "Teknik Informatika",
+          pasfoto: "people1.png"
+        },
+        {
+          nama: "Lisa",
+          jurusan: "Sistem Informasi",
+          pasfoto: "people2.png"
+        },
+      ];
+
+      // functional component
+      const Mahasiswa = (props) => {
+        return (
+          <div>
+            <h1>{props.nama}</h1>
+            <h2>{props.jurusan}</h2>
+            <img src={"img/"+props.pasfoto} alt="" />
+          </div>
+        );
+      };
+
+      const Tombol = (props) => {
+        return <button onClick={props.onClick}>{props.children}</button>;
+      };
+
+      // class component
+      class MyApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            mahasiswa: mahasiswa[0],
+          };
+        }
+
+        tukarMahasiswa = () => {
+          const index = this.state.mahasiswa === mahasiswa[0] ? 1 : 0;
+          this.setState({
+            mahasiswa: mahasiswa[index],
+          });
+        };
+
+        render() {
+          return (
+            <div>
+              <Mahasiswa
+                nama={this.state.mahasiswa.nama}
+                jurusan={this.state.mahasiswa.jurusan}
+                pasfoto={this.state.mahasiswa.pasfoto}
+              />
+              <br/>
+              <Tombol onClick={this.tukarMahasiswa}>Tukar Mahasiswa</Tombol>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+  </body>
+</html>
