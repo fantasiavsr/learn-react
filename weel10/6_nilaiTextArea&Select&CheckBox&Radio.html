@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <style>
+      #root {
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-family: "Sagoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        margin-top: 2rem;
+        padding: 2rem 3rem;
+        box-shadow: 8px 8px 8px black;
+        border: 2px solid black;
+      }
+      .container div {
+        padding-bottom: 0.6rem;
+      }
+
+      div label :first-child {
+        display: inline-block;
+        width: 180px;
+      }
+
+      label {
+        vertical-align: top;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea,
+      select {
+        width: 230px;
+        font-size: 1rem;
+      }
+
+      button {
+        background-color: white;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-weight: bold;
+        border: 1px solid gray;
+        box-shadow: 2px 2px 2px black;
+        margin: 10px 0;
+      }
+
+      button:hover {
+        box-shadow: 1px 1px 1px black;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1f3f6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      // Form ini terdiri dari 6 jenis inputan
+      class MyApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            nama: "",
+            email: "",
+            alamat: "",
+            jurusan: "",
+            jenisKelamin: "",
+            beasiswa: false,
+          };
+        }
+
+        handleInputChange = (event) => {
+          const target = event.target;
+          const value =
+            target.type === "checkbox" ? target.checked : target.value;
+          const name = target.name;
+
+          this.setState({
+            [name]: value,
+          });
+        };
+
+        handleButtonClick = () => {
+          console.log(this.state);
+        };
+
+        render() {
+          return (
+            <div className="container">
+              <div>
+                <label htmlFor="nama">Nama</label>
+                <input
+                  type="text"
+                  name="nama"
+                  id="nama"
+                  value={this.state.nama}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="alamat">Alamat</label>
+                <textarea
+                  name="alamat"
+                  id="alamat"
+                  cols="30"
+                  rows="5"
+                  value={this.state.alamat}
+                  onChange={this.handleInputChange}
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="jurusan">Jurusan</label>
+                <select
+                  name="jurusan"
+                  id="jurusan"
+                  value={this.state.jurusan}
+                  onChange={this.handleInputChange}
+                >
+                  <option value="">Pilih Jurusan</option>
+                  <option value="Teknik Informatika">Teknik Informatika</option>
+                  <option value="Teknik Industri">Teknik Industri</option>
+                  <option value="Teknik Mesin">Teknik Mesin</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="jenisKelamin">Jenis Kelamin</label>
+                <div>
+                  <input
+                    type="radio"
+                    name="jenisKelamin"
+                    id="jenisKelamin"
+                    value="Laki-laki"
+                    checked={this.state.jenisKelamin === "Laki-laki"}
+                    onChange={this.handleInputChange}
+                  />
+                  <label htmlFor="jenisKelamin">Laki-laki</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="jenisKelamin"
+                    id="jenisKelamin"
+                    value="Perempuan"
+                    checked={this.state.jenisKelamin === "Perempuan"}
+                    onChange={this.handleInputChange}
+                  />
+                  <label htmlFor="jenisKelamin">Perempuan</label>
+                </div>
+              </div>
+              <div>
+                <label htmlFor="beasiswa">Beasiswa</label>
+                <input
+                  type="checkbox"
+                  name="beasiswa"
+                  id="beasiswa"
+                  checked={this.state.beasiswa}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <button onClick={this.handleButtonClick}>Submit</button>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+  </body>
+</html>

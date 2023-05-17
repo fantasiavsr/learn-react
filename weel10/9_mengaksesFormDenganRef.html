@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="./js/bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css"
+    />
+    <style>
+      #root {
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-family: "Sagoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        margin-top: 2rem;
+        padding: 2rem 3rem;
+        box-shadow: 8px 8px 8px black;
+        border: 2px solid black;
+      }
+      .container div {
+        padding-bottom: 0.6rem;
+      }
+
+      div label :first-child {
+        display: inline-block;
+        width: 180px;
+      }
+
+      label {
+        vertical-align: top;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea,
+      select {
+        width: 230px;
+        font-size: 1rem;
+      }
+
+      button {
+        background-color: white;
+        cursor: pointer;
+        padding: 10px 20px;
+        font-weight: bold;
+        border: 1px solid gray;
+        box-shadow: 2px 2px 2px black;
+        margin: 10px 0;
+      }
+
+      button:hover {
+        box-shadow: 1px 1px 1px black;
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f1f3f6">
+    <div id="root"></div>
+
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/babel.js"></script>
+
+    <script type="text/babel">
+      // mengakses form dengan ref
+      class MyApp extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            judulRef: React.createRef(),
+          };
+        }
+
+        handleButtonClick = () => {
+          console.log(this.state.judulRef.current.value);
+        };
+
+        render() {
+          return (
+            <div>
+              <input type="text" ref={this.state.judulRef} />
+              <button onClick={this.handleButtonClick}>Ubah Judul</button>
+            </div>
+          );
+        }
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
+    </script>
+  </body>
+</html>
