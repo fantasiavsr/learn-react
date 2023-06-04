@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moora Decision Making</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.1/babel.min.js"></script>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      const MooraApp = () => {
+        const criteria = [
+          { name: 'lokasi', label: 'Lokasi yang Strategis' },
+          { name: 'jenisBarang', label: 'Jenis Barang yang Dijual' },
+          { name: 'kualitasLayanan', label: 'Kualitas Layanan' },
+          { name: 'kebersihan', label: 'Kebersihan' },
+          { name: 'keamanan', label: 'Keamanan' },
+          { name: 'ketersediaanParkir', label: 'Ketersediaan Parkir' },
+          { name: 'banyaknyaPembayaran', label: 'Banyaknya Metode Pembayaran' },
+          { name: 'jarakRumah', label: 'Jarak dari Rumah' },
+          { name: 'pajakPpn', label: 'Pajak PPN' },
+          { name: 'hargaParkir', label: 'Harga Parkir' },
+        ];
+
+        const [weights, setWeights] = useState({});
+        const [result, setResult] = useState([]);
+
+        const handleWeightChange = (e) => {
+          const { name, value } = e.target;
+          setWeights({ ...weights, [name]: value });
+        };
+
+        const generateAlternatives = () => {
+          const alternatives = [];
+
+          for (let i = 0; i < 10; i++) {
+            const alternative = {};
+
+            for (const criterion of criteria) {
+              alternative[criterion.name] = (Math.random() * (0.8 - 0.2) + 0.2).toFixed(2);
+            }
+
+            alternatives.push(alternative);
+          }
+
+          return alternatives;
+        };
+
+        const [alternatives] = useState(generateAlternatives());
+
+        const handleSubmit = (e) => {
+          e.preventDefault();
+
+          // Perhitungan Moora
+          const normalizedWeights = normalizeWeights(weights);
+          const normalizedAlternatives = normalizeAlternatives(alternatives);
+
+          const weightedMatrix = calculateWeightedMatrix(normalizedAlternatives, normalizedWeights);
+          const weightedSum = calculateWeightedSum(weightedMatrix);
+          const finalRanking = calculateFinalRanking(weightedSum);
+
+          setResult(finalRanking);
+        };
+
+        const normalizeWeights = (weights) => {
+          const totalWeight = Object.values(weights).reduce((acc, val) => acc + parseFloat(val), 0);
+          const normalizedWeights = {};
+
+          for (const key in weights) {
+            normalizedWeights[key] = parseFloat(weights[key]) / totalWeight;
+          }
+
+          return normalizedWeights;
+        };
+
+        const normalizeAlternatives = (alternatives) => {
+          const normalizedAlternatives = [];
+
+          for (const alternative of alternatives) {
+            const normalizedValues = {};
+
+            for (const key in alternative) {
+              normalizedValues[key] = parseFloat(alternative[key]);
+            }
+
+            normalizedAlternatives.push(normalizedValues);
+          }
+
+          return normalizedAlternatives;
+        };
+
+        const calculateWeightedMatrix = (normalizedAlternatives, normalizedWeights) => {
+          const weightedMatrix = [];
+
+          for (const alternative of normalizedAlternatives) {
+            const weightedValues = {};
+
+            for (const key in alternative) {
+              weightedValues[key] = alternative[key] * normalizedWeights[key];
+            }
+
+            weightedMatrix.push(weightedValues);
+          }
+
+          return weightedMatrix;
+        };
+
+        const calculateWeightedSum = (weightedMatrix) => {
+          const weightedSum = {};
+
+          for (const key in weightedMatrix[0]) {
+            weightedSum[key] = 0;
+
+            for (const alternative of weightedMatrix) {
+              weightedSum[key] += alternative[key];
+            }
+          }
+
+          return weightedSum;
+        };
+
+        const calculateFinalRanking = (weightedSum) => {
+          const alternativesRanking = [];
+
+          for (let i = 0; i < alternatives.length; i++) {
+            let score = 0;
+
+            for (const key in weightedSum) {
+              score += weightedSum[key] * alternatives[i][key];
+            }
+
+            alternativesRanking.push({ alternative: i + 1, score });
+          }
+
+          alternativesRanking.sort((a, b) => b.score - a.score);
+
+          return alternativesRanking;
+        };
+
+        return (
+          <div className="container">
+            <h1>Aplikasi Pengambilan Keputusan Moora</h1>
+            <form onSubmit={handleSubmit}>
+              <h2>Bobot Kriteria</h2>
+              {criteria.map((criterion, index) => (
+                <div key={index} className="mb-3">
+                  <label htmlFor={criterion.name} className="form-label">
+                    {criterion.label}
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    id={criterion.name}
+                    name={criterion.name}
+                    className="form-control"
+                    value={weights[criterion.name] || ''}
+                    onChange={handleWeightChange}
+                  />
+                </div>
+              ))}
+              <button type="submit" className="btn btn-primary">
+                Hitung
+              </button>
+            </form>
+            {result.length > 0 && (
+              <div>
+                <h2>Hasil Perankingan Alternatif</h2>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Alternatif</th>
+                      <th>Skor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.map((ranking, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{`Alternatif ${ranking.alternative}`}</td>
+                        <td>{ranking.score.toFixed(4)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<MooraApp />);
+    </script>
+  </body>
+</html>
