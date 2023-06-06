@@ -114,43 +114,93 @@
     <script src="js/react-dom.development.js"></script>
     <script src="js/babel.js"></script>
     <script type="text/babel">
-      // Data awal todos
+      // Mendefinisikan array todos yang berisi daftar tugas
       const todos = [
         { id: "01", text: "Baca buku React Uncover" },
         { id: "02", text: "Makan siang" },
         { id: "03", text: "Main game" },
       ];
 
-      // Komponen Todo untuk menampilkan satu todo item
+      // Komponen Todo untuk menampilkan tugas dan fitur pengeditan
       const Todo = (props) => {
+        const [isEditing, setIsEditing] = React.useState(false);
+        const [editedText, setEditedText] = React.useState(props.text);
+
+        const handleTodoClick = () => {
+          props.onTodoClick(props.id);
+        };
+
+         // Menghandle saat tombol edit di klik
+        const handleEditClick = () => {
+          setIsEditing(true);
+        };
+
+        // Menghandle saat tombol save di klik
+        const handleSaveClick = () => {
+          props.onTodoEdit(props.id, editedText);
+          setIsEditing(false);
+        };
+
+        // Menghandle saat tombol cancel di klik
+        const handleCancelClick = () => {
+          setIsEditing(false);
+          setEditedText(props.text);
+        };
+
+        // Menghandle perubahan teks pada input pengeditan
+        const handleTextChange = (e) => {
+          setEditedText(e.target.value);
+        };
+
+         // Ttampilan komponen Todo
         return (
           <div className="todo">
-            {props.text}
-            <span id={props.id} onClick={props.onTodoClick}>
-              x
-            </span>
+            {isEditing ? (
+              <>
+                <input
+                  type="text"
+                  value={editedText}
+                  onChange={handleTextChange}
+                  style={{ marginRight: "10px" }}
+                />
+                <button className="edit-button" onClick={handleSaveClick}>
+                  Save
+                </button>
+                <button className="edit-button" onClick={handleCancelClick}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+               // Tampilan saat tidak dalam mode pengeditan
+              <>
+                <div className="todo-text">{props.text}</div>
+                <span onClick={handleEditClick}>✎</span>
+                <span onClick={handleTodoClick}>x</span>
+              </>
+            )}
           </div>
         );
       };
 
-      // Komponen TodoForm untuk menambahkan todo baru
+      // Komponen TodoForm untuk menambahkan tugas baru
       const TodoForm = (props) => {
         const [inputTodo, setInputTodo] = React.useState("");
         const [pesanErrors, setpesanErrors] = React.useState(null);
 
+         // Menghandle perubahan pada input tambahan tugas
         const handleInputChange = (e) => {
           setInputTodo(e.target.value);
         };
 
+        // Validasi
         const handleFormSubmit = (e) => {
           e.preventDefault();
           if (inputTodo.trim() === "") {
             setpesanErrors("Todo tidak boleh kosong");
           } else {
-            // Input todo baru ke dalam state
             props.onAddTodo(inputTodo);
-            // Kosongkan input text
             setInputTodo("");
+            setpesanErrors(null);
           }
         };
 
@@ -163,88 +213,84 @@
                 value={inputTodo}
                 onChange={handleInputChange}
               />
-              {pesanErrors && <small>{pesanErrors}</small>}
+              {pesanErrors && (
+                <small className="small-error">{pesanErrors}</small>
+              )}
             </div>
           </form>
         );
       };
 
-      // Komponen MyApp sebagai komponen utama aplikasi
-      class MyApp extends React.Component {
-        constructor(props) {
-          super(props);
-          this.state = {
-            arrayTodo: todos,
-          };
-        }
+      const MyApp = () => {
+        const [arrayTodo, setArrayTodo] = React.useState(todos);
 
-        // Menghapus todo berdasarkan ID
-        handleDeleteClick = (e) => {
-          const newTodos = this.state.arrayTodo.filter(
-            (item) => item.id !== e.target.id
-          );
-          this.setState({ arrayTodo: newTodos });
+        // Menghandle saat tugas dihapus
+        const handleDeleteClick = (id) => {
+          const newTodos = arrayTodo.filter((item) => item.id !== id);
+          setArrayTodo(newTodos);
         };
 
-        // Menambahkan todo baru
-        handleAddTodo = (text) => {
+        // Menghandle saat tugas ditambahkan
+        const handleAddTodo = (text) => {
           const newTodos = [
-            ...this.state.arrayTodo,
+            ...arrayTodo,
             {
               id: new Date().getTime().toString(),
               text: text,
             },
           ];
-          this.setState({ arrayTodo: newTodos });
+          setArrayTodo(newTodos);
         };
 
-        // Mengurutkan todos secara ascending
-        handleSortAscending = () => {
-          const sortedTodos = [...this.state.arrayTodo].sort((a, b) =>
+        // Menghandle saat tugas diubah
+        const handleEditTodo = (id, newText) => {
+          const updatedTodos = arrayTodo.map((item) =>
+            item.id === id ? { ...item, text: newText } : item
+          );
+          setArrayTodo(updatedTodos);
+        };
+
+        // Asccending
+        const handleSortAscending = () => {
+          const sortedTodos = [...arrayTodo].sort((a, b) =>
             a.text.localeCompare(b.text)
           );
-          this.setState({ arrayTodo: sortedTodos });
+          setArrayTodo(sortedTodos);
         };
-
-        // Mengurutkan todos secara descending
-        handleSortDescending = () => {
-          const sortedTodos = [...this.state.arrayTodo].sort((a, b) =>
+        
+        // Descending
+        const handleSortDescending = () => {
+          const sortedTodos = [...arrayTodo].sort((a, b) =>
             b.text.localeCompare(a.text)
           );
-          this.setState({ arrayTodo: sortedTodos });
+          setArrayTodo(sortedTodos);
         };
 
-        render() {
-          return (
-            <div className="container">
-              {/* Menampilkan daftar todos */}
-              {this.state.arrayTodo.map((todo) => (
-                <Todo
-                  key={todo.id}
-                  id={todo.id}
-                  text={todo.text}
-                  onTodoClick={this.handleDeleteClick}
-                />
-              ))}
-
-              {/* Menambahkan form untuk menambahkan todo baru */}
-              <TodoForm onAddTodo={this.handleAddTodo} />
-
-              {/* Tombol Sort Ascending dan Sort Descending */}
-              <div className="sort-buttons">
-                <button onClick={this.handleSortAscending}>
-                  Sort Ascending
-                </button>
-                <button onClick={this.handleSortDescending}>
-                  Sort Descending
-                </button>
-              </div>
+        // Tampilan
+        return (
+          <div className="container">
+            {arrayTodo.map((todo) => (
+              <Todo
+                key={todo.id}
+                id={todo.id}
+                text={todo.text}
+                onTodoClick={handleDeleteClick}
+                onTodoEdit={handleEditTodo}
+              />
+            ))}
+            <TodoForm onAddTodo={handleAddTodo} />
+            <div className="sort-buttons">
+              <button className="sort-button" onClick={handleSortAscending}>
+                Sort Ascending
+              </button>
+              <button className="sort-button" onClick={handleSortDescending}>
+                Sort Descending
+              </button>
             </div>
-          );
-        }
-      }
+          </div>
+        );
+      };
 
-      // Render komponen MyApp ke dalam elemen dengan id 'root'
       ReactDOM.createRoot(document.getElementById("root")).render(<MyApp />);
     </script>
   </body>

@@ -39,14 +39,17 @@
 
         const handleWeightChange = (e) => {
           const { name, value } = e.target;
-          setWeights({ ...weights, [name]: value });
+          setWeights({ ...weights, [name]: parseFloat(value) });
         };
 
         const handleSubmit = (e) => {
           e.preventDefault();
-          const weightedMatrix = calculateWeightedMatrix(alternatives, weights);
-          const finalRanking = calculateFinalRanking(weightedMatrix);
-          setResult(finalRanking);
+
+          const normalizedMatrix = calculateNormalizedMatrix();
+          const optimizationValues = calculateOptimizationValues(normalizedMatrix);
+          const rankings = calculateRankings(optimizationValues);
+
+          setResult(rankings);
         };
 
         function generateAlternatives() {
@@ -65,40 +68,52 @@
           return alternatives;
         }
 
-        function calculateWeightedMatrix(matrix, weights) {
-          const weightedMatrix = [];
+        function calculateNormalizedMatrix() {
+          const normalizedMatrix = [];
 
-          for (const alternative of matrix) {
-            const weightedValues = {};
+          for (const criterion of criteria) {
+            const values = alternatives.map((alternative) => alternative[criterion.name]);
+            const sumOfSquares = values.reduce((acc, val) => acc + val ** 2, 0);
+            const sqrtSumOfSquares = Math.sqrt(sumOfSquares);
+            const normalizedValues = values.map((val) => val / sqrtSumOfSquares);
 
-            for (const key in alternative) {
-              weightedValues[key] = alternative[key] * weights[key];
-            }
-
-            weightedMatrix.push(weightedValues);
+            normalizedMatrix.push(normalizedValues);
           }
 
-          return weightedMatrix;
+          return normalizedMatrix;
         }
 
-        function calculateFinalRanking(matrix) {
-          const scores = [];
+        function calculateOptimizationValues(normalizedMatrix) {
+          const optimizationValues = [];
 
-          for (let i = 0; i < matrix.length; i++) {
-            const alternative = matrix[i];
-            let sumOfSquares = 0;
+          for (const alternative of alternatives) {
+            const values = [];
 
-            for (const key in alternative) {
-              sumOfSquares += alternative[key] * alternative[key];
+            for (let i = 0; i < criteria.length; i++) {
+              const criterion = criteria[i];
+              const weightsValue = weights[criterion.name] || 0;
+              const maxValue = Math.max(...normalizedMatrix[i]);
+              const minValue = Math.min(...normalizedMatrix[i]);
+
+              const optimizationValue = weightsValue * (alternative[criterion.name] - minValue) / (maxValue - minValue);
+              values.push(optimizationValue);
             }
 
-            const score = Math.sqrt(sumOfSquares);
-            scores.push({ alternative: i + 1, score });
+            optimizationValues.push(values);
           }
 
-          scores.sort((a, b) => b.score - a.score);
+          return optimizationValues;
+        }
 
-          return scores;
+        function calculateRankings(optimizationValues) {
+          const rankings = optimizationValues.map((values, index) => ({
+            alternative: index + 1,
+            score: values.reduce((acc, val) => acc + val, 0),
+          }));
+
+          rankings.sort((a, b) => b.score - a.score);
+
+          return rankings;
         }
 
         return (
