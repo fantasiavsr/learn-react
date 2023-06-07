@@ -1,13 +1,7 @@
 import React from 'react';
 import Todo from './components/Todo';
 import TodoForm from './components/TodoForm';
-
-// Mendefinisikan array todos yang berisi daftar tugas
-const todos = [
-    { id: "01", text: "Baca buku React Uncover" },
-    { id: "02", text: "Makan siang" },
-    { id: "03", text: "Main game" },
-];
+import todos from './data/todo';
 
 const App = () => {
     const [arrayTodo, setArrayTodo] = React.useState(todos);

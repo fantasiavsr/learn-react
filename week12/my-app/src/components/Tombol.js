@@ -1,4 +1,5 @@
 import React from 'react';
+import './Tombol.css';
 
 const Tombol = (props) => {
     const { handleChange } = props;

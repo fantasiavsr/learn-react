@@ -1,20 +1,40 @@
 import React from 'react';
 import Tombol from './Tombol';
+import './Belajar.css';
 
-const Belajar = () => {
-    const [judul, setJudul] = React.useState("React");
-
-    const handleChange = (judul) => {
-        setJudul(judul);
+class Belajar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            judul: "React"
+        }
     }
 
-    return (
-        <div>
-            <h1>Belajar {judul}</h1>
-            <Tombol handleChange={handleChange}>React</Tombol>
-            <Tombol handleChange={handleChange}>Javascript</Tombol>
-        </div>
-    );
+    componentDidMount = () => {
+        console.log("Judul awal: " + this.state.judul);
+    }
+
+    componentDidUpdate = () => {
+        console.log("Judul akhir: " + this.state.judul);
+    }
+
+    handleChange = (judul) => {
+        this.setState({
+            judul: judul
+        });
+    }
+
+    render() {
+        return (
+            <>
+                <div>
+                    <h1>Belajar {this.state.judul}</h1>
+                    <Tombol handleChange={this.handleChange}>React</Tombol>
+                    <Tombol handleChange={this.handleChange}>Javascrtipt</Tombol>
+                </div>
+            </>
+        );
+    }
 }
 
 export default Belajar;
